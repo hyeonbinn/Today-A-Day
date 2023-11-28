@@ -9,27 +9,47 @@
     tools:context=".MainActivity"
     android:background="#78909c">
 
-    <TextView
-        android:id="@+id/tv_text"
-        android:textSize="15dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:fontFamily="@font/cafeclassic"
-        android:text="날짜를 선택해주세요."/>
-    <TextView
-        android:id="@+id/tv_text2"
-        android:textSize="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:fontFamily="@font/cafeclassic"
-        android:gravity="center"/>
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:fontFamily="@font/cafeclassic"
+            android:singleLine="true"
+            android:text="날짜를 선택해주세요."
+            android:textColor="@color/black"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/tv_text2"
+            android:textSize="25dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/cafeclassic"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/btnToday"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:background="@color/bluegray_700"
+            android:layout_marginStart="10dp"
+            android:onClick="setTodayDate"
+            android:text="Today" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/header_title"
         android:text="To Do List"
-        android:textSize="20dp"
+        android:textSize="23dp"
         android:gravity="center"
         android:textColor="@color/black"
         android:layout_width="match_parent"
@@ -48,6 +68,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:id="@+id/tv_text3"
+        android:textSize="17dp"
         android:text="0000년 00월 00일" />
     <EditText
         android:layout_width="match_parent"

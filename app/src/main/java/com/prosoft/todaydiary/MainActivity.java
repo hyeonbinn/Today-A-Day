@@ -67,11 +67,21 @@ public class MainActivity extends AppCompatActivity {
         int cYear = c.get(Calendar.YEAR);
         int cMonth = c.get(Calendar.MONTH);
         int cDay = c.get(Calendar.DAY_OF_MONTH);
+
         // 첫 시작 시 오늘 날짜 일기 읽어주기
         checkedDay(cYear, cMonth, cDay);
         tv_text3.setText(cYear + "년 " + (cMonth+1) + "월 " + cDay + "일");
 
-        // 일기삭제 부분 (나중에 다이얼로그로 정말로 삭제하시겠습니까? 창 출력하도록
+        //Today 버튼을 누르면 캘린더에 오늘 날짜로 표시하기
+        Button btnToday = findViewById(R.id.btnToday);
+        btnToday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTodayDate(view);
+            }
+        });
+
+        // 할일삭제 부분 (나중에 다이얼로그로 정말로 삭제하시겠습니까? 창 출력하도록
         delToDoList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -183,6 +193,24 @@ public class MainActivity extends AppCompatActivity {
             newWrite.setText("할 일 추가하기");
             e.printStackTrace();
         }
+    }
+
+    public void setTodayDate(View view) {
+        Calendar c = Calendar.getInstance();
+        int todayYear = c.get(Calendar.YEAR);
+        int todayMonth = c.get(Calendar.MONTH);
+        int todayDay = c.get(Calendar.DAY_OF_MONTH);
+
+        // Set the CalendarView to today's date
+        CalView.setDate(c.getTimeInMillis(), true, true);
+
+        // Update TextViews accordingly
+        tv_text.setText(todayYear + "년");
+        tv_text2.setText((todayMonth + 1) + "월 " + todayDay + "일");
+        tv_text3.setText(todayYear + "년 " + (todayMonth + 1) + "월 " + todayDay + "일");
+
+        // Load diary for today
+        checkedDay(todayYear, todayMonth, todayDay);
     }
 
     @Override
