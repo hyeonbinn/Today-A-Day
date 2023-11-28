@@ -3,14 +3,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ADC2A9">
+    android:background="#78909c">
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/planList"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
-        android:background="#99A799"
-        android:divider="#ADC2A9"
+        android:background="#90a4ae"
+        android:divider="#78909c"
         android:dividerHeight="4dp"/>
 </LinearLayout>
