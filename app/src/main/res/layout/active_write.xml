@@ -2,25 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#90a4ae">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:text="2022년 11월 13일"
         android:id="@+id/writeDay"
         android:textColor="@color/black"
         android:textAlignment="center"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:gravity="center"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"/>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+        android:layout_height="550dp"
         android:hint="내용을 입력하세요."
+        android:textSize="20dp"
         android:id="@+id/edtDiary"
         android:textColorHint="#808080"
         android:textColor="@color/black"
