@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 tv_text2.setText((month + 1) + "월 " + day + "일");
                 tv_text3.setText(year + "년 " + (month+1) + "월 " + day + "일");
                 fileName = Integer.toString(year) + Integer.toString(month+1) + Integer.toString(day) + ".txt";
-                String str = readDiary(fileName);
+                String str = readToDoList(fileName);
                 contextToDoList.setText(str);
             }
         });
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 할일 읽기
-    String readDiary(String fName) {
+    String readToDoList(String fName) {
         String ToDoListStr = null;
         FileInputStream inFs;
         try {
@@ -179,14 +179,14 @@ public class MainActivity extends AppCompatActivity {
             fis.read(fileData);
             fis.close();
 
-            String str = readDiary(fileName);
+            String str = readToDoList(fileName);
             if(str.equals("")) {
                 contextToDoList.setVisibility(View.INVISIBLE);
                 newWrite.setText("할 일 추가하기");
                 delToDoList.setVisibility(View.INVISIBLE);
             } else {
                 contextToDoList.setText(str);
-                newWrite.setText("읽기 & 수정");
+                newWrite.setText("수정");
             }
         } catch (Exception e) { // UnsupportedEncodingException , FileNotFoundException , IOException
             contextToDoList.setText("");

@@ -62,7 +62,7 @@ public class WriteActivity extends AppCompatActivity {
                 // 할 일이 없을 때
             } else {
                 // 할 일이 있을 때
-                setTitle("할 일 읽기 & 수정");
+                setTitle("할 일 수정");
             }
         } catch (IOException e) {
             e.printStackTrace();

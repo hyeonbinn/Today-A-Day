@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
 
-        // PIN 찾기 구현
+        // 비밀번호 찾기 구현
         btnFindPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                     dialogView[0] = (View) View.inflate(LoginActivity.this,
                             R.layout.find_pin_dialog, null);
                     AlertDialog.Builder dlg2 = new AlertDialog.Builder(LoginActivity.this);
-                    dlg2.setTitle("PIN 찾기");
+                    dlg2.setTitle("비밀번호 찾기");
                     dlg2.setIcon(R.drawable.resetpng);
                     dlg2.setView(dialogView[0]);
                     dlg2.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "초기 비밀번호인 0000입니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "초기 비밀번호는 0000입니다!", Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
