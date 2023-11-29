@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.prosoft.todaydiary">
+    package="com.prosoft.todolist">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -13,9 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodayDiary"
         tools:targetApi="31">
-        <activity android:name=".LoginActivity"
+        <activity android:name="com.prosoft.todolist.LoginActivity"
             android:exported="false" />
-        <activity android:name=".SplashActivity"
+        <activity android:name="com.prosoft.todolist.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -23,15 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name="com.prosoft.todolist.MainActivity"
             android:theme="@style/Theme.AppCompat"/>
-        <activity android:name=".PlanList"
+        <activity android:name="com.prosoft.todolist.PlanList"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.prosoft.todolist.MainActivity"
             android:theme="@style/Theme.AppCompat"/>
-        <activity android:name=".WriteActivity"
+        <activity android:name="com.prosoft.todolist.WriteActivity"
             android:exported="true"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.prosoft.todolist.MainActivity"
             android:theme="@style/Theme.AppCompat"/>
     </application>
 

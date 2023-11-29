@@ -1,4 +1,4 @@
-package com.prosoft.todaydiary;
+package com.prosoft.todolist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
