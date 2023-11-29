@@ -1,4 +1,4 @@
-package com.prosoft.todaydiary;
+package com.prosoft.todolist;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

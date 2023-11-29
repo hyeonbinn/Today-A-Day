@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.prosoft.todaydiary"
+        applicationId "com.prosoft.todolist"
         minSdk 21
         targetSdk 32
         versionCode 1

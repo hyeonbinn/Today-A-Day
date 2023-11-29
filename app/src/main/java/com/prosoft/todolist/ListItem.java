@@ -1,4 +1,4 @@
-package com.prosoft.todaydiary;
+package com.prosoft.todolist;
 
 public class ListItem {
     private String nameList;
