@@ -75,31 +75,37 @@ public class PlanList extends AppCompatActivity {
         if (fp.exists()) {
             File[] files = fp.listFiles();
             String fileName, extName;
-            String fYear, fMonth, fDay;
             for (File file : files) {
                 if (!file.isHidden() && file.isFile()) {
                     fileName = file.getName();
                     extName = fileName;
                     fileName = fileName.replaceAll(".txt", "");
-                    if (fileName.length() == 7) {
-                        fYear = fileName.substring(0, 4);
-                        fMonth = fileName.substring(4, 6);
-                        fDay = fileName.substring(6); // 변경된 부분
-                    } else if (fileName.length() == 8) { // 추가된 부분
+                    String fYear, fMonth, fDay;
+
+                    if (fileName.length() == 8) {
                         fYear = fileName.substring(0, 4);
                         fMonth = fileName.substring(4, 6);
                         fDay = fileName.substring(6, 8);
+                    } else if (fileName.length() == 6) {
+                        fYear = fileName.substring(0, 2);
+                        fMonth = fileName.substring(2, 4);
+                        fDay = fileName.substring(4, 6);
                     } else {
-                        // 예외 처리: 파일명 길이가 7이나 8이 아닌 경우
-                        continue;
+                        // 예외 처리 또는 기본 값 설정
+                        continue; // 파일명이 기대하는 형식이 아니면 건너뛰기
                     }
 
                     try {
                         FileInputStream inFs = openFileInput(extName);
                         byte[] txt = new byte[60];
                         inFs.read(txt);
-                        String str = new String(txt);
-                        adapter.addItem(new ListItem(fYear + "년 " + fMonth + "월 " + fDay + "일", str));
+                        String str = new String(txt).trim(); // trim 추가
+
+                        if (str.isEmpty()) {
+                            // 메모가 없는 경우 아이템을 추가하지 않고 다음 파일로 진행
+                            continue;
+                        }
+
                         inFs.close(); // Close the FileInputStream
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -108,8 +114,6 @@ public class PlanList extends AppCompatActivity {
             }
         }
     }
-
-
 
     private void showDeleteConfirmationDialog(final String fileName, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
