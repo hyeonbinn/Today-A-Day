@@ -84,11 +84,14 @@ public class PlanList extends AppCompatActivity {
                     if (fileName.length() == 7) {
                         fYear = fileName.substring(0, 4);
                         fMonth = fileName.substring(4, 6);
-                        fDay = fileName.substring(6, 7);
-                    } else {
+                        fDay = fileName.substring(6); // 변경된 부분
+                    } else if (fileName.length() == 8) { // 추가된 부분
                         fYear = fileName.substring(0, 4);
                         fMonth = fileName.substring(4, 6);
                         fDay = fileName.substring(6, 8);
+                    } else {
+                        // 예외 처리: 파일명 길이가 7이나 8이 아닌 경우
+                        continue;
                     }
 
                     try {
@@ -105,6 +108,8 @@ public class PlanList extends AppCompatActivity {
             }
         }
     }
+
+
 
     private void showDeleteConfirmationDialog(final String fileName, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
