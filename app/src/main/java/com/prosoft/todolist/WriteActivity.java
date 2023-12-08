@@ -94,6 +94,44 @@ public class WriteActivity extends AppCompatActivity {
 
             ToDoListStr = new String(txt).trim();
             inFs.close();
+
+            // 파일에서 읽은 내용을 기반으로 체크박스 상태 및 작업 텍스트를 설정
+            String[] lines = ToDoListStr.split("\n");
+            for (String line : lines) {
+                String[] parts = line.split("\\|");
+                if (parts.length == 2) {
+                    String isChecked = parts[0];
+                    String task = parts[1];
+
+                    LinearLayout taskLayout = new LinearLayout(this);
+                    taskLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    ));
+                    taskLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                    CheckBox checkBox = new CheckBox(this);
+                    checkBox.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    ));
+                    checkBox.setChecked("1".equals(isChecked));
+                    taskLayout.addView(checkBox);
+
+                    EditText todoEditText = new EditText(this);
+                    todoEditText.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    ));
+                    todoEditText.setHint("할 일을 입력하세요.");
+                    todoEditText.setTextSize(20);
+                    todoEditText.setText(task);
+                    taskLayout.addView(todoEditText);
+
+                    checkListLayout.addView(taskLayout);
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -125,22 +163,31 @@ public class WriteActivity extends AppCompatActivity {
             fos = openFileOutput(fileName, MODE_PRIVATE);
             StringBuilder content = new StringBuilder();
 
-            // 체크박스와 텍스트를 한 줄로 저장
+            // 텍스트를 한 줄로 저장
             for (int i = 0; i < checkListLayout.getChildCount(); i++) {
                 LinearLayout taskLayout = (LinearLayout) checkListLayout.getChildAt(i);
                 CheckBox checkBox = (CheckBox) taskLayout.getChildAt(0);
                 EditText taskEditText = (EditText) taskLayout.getChildAt(1);
 
                 String task = taskEditText.getText().toString();
-                String isChecked = checkBox.isChecked() ? "1" : "0"; // 1은 체크, 0은 체크 해제
 
-                content.append(isChecked).append("|").append(task).append("\n");
+                // 체크박스에 내용이 있을 때만 저장
+                if (!task.isEmpty()) {
+                    content.append(task).append("\n");
+                } else {
+                    // 내용이 비어있으면 해당 체크박스를 레이아웃에서 제거
+                    checkListLayout.removeView(taskLayout);
+                    i--;  // 제거 후에 인덱스가 하나씩 땡겨져서 현재 위치를 다시 확인
+
+                    // 연관된 데이터를 삭제 (이 부분을 적절히 구현해야 합니다)
+                    // 예를 들어, 파일에서 해당 라인을 삭제하는 등의 작업이 필요합니다.
+                }
             }
-
-            fos.write(content.toString().getBytes());
 
             // 하루 피드백 추가
             content.append("\n").append(feedback.getText().toString());
+
+            fos.write(content.toString().getBytes());
 
             fos.flush();
             fos.close();
@@ -153,4 +200,5 @@ public class WriteActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "오류가 발생하였습니다!", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
