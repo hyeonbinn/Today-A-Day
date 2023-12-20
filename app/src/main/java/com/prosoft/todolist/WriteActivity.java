@@ -1,11 +1,13 @@
 package com.prosoft.todolist;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,43 +18,32 @@ import androidx.appcompat.app.AppCompatDelegate;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 public class WriteActivity extends AppCompatActivity {
 
-    TextView writeDay;
-    EditText feedback;
     LinearLayout checkListLayout;
-
     String fileName;
+    EditText feedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.active_write);
-        setTitle("할 일 작성");
-
-        String year, monthday;
-
-        feedback = findViewById(R.id.feedback);
         checkListLayout = findViewById(R.id.checkListLayout);
 
-        writeDay = findViewById(R.id.writeDay);
+        // Initialize with current date
         Intent intent = getIntent();
-        year = intent.getStringExtra("years");
-        monthday = intent.getStringExtra("monthdays");
-        writeDay.setText(year + " " + monthday);
-        fileName = writeDay.getText().toString() + ".txt";
-        String str = readToDoList(fileName);
-        feedback.setText(str);
+        String year = intent.getStringExtra("years");
+        String monthday = intent.getStringExtra("monthdays");
+        fileName = year + " " + monthday + ".txt";
 
-        // 할 일을 동적으로 추가
-        findViewById(R.id.btnAddTodo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addTodo();
-            }
-        });
+        String str = readToDoList(fileName);
+        // Use str to set up your view
+
+        // Add new task
+        Button btnAddTodo = findViewById(R.id.btnAddTodo);
+        btnAddTodo.setOnClickListener(v -> addTodo());
     }
 
     private void addTodo() {
@@ -64,24 +55,44 @@ public class WriteActivity extends AppCompatActivity {
         taskLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         CheckBox checkBox = new CheckBox(this);
-        checkBox.setLayoutParams(new LinearLayout.LayoutParams(
+        taskLayout.addView(checkBox);
+
+        EditText todoEditText = new EditText(this);
+        todoEditText.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1
+        ));
+        todoEditText.setHint("할 일을 입력하세요.");
+        taskLayout.addView(todoEditText);
+
+        EditText timeEditText = new EditText(this);
+        timeEditText.setFocusable(false); // To open TimePickerDialog
+        timeEditText.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        taskLayout.addView(checkBox);
+        timeEditText.setOnClickListener(v -> pickTime(timeEditText));
+        timeEditText.setHint("시간 선택");
+        taskLayout.addView(timeEditText);
 
-        // EditText 추가
-        EditText todoEditText = new EditText(this);
-        todoEditText.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-        todoEditText.setHint("할 일을 입력하세요.");
-        todoEditText.setTextSize(20);
-        taskLayout.addView(todoEditText);
-
-        // 생성된 레이아웃을 기존의 할 일 목록 레이아웃에 추가
         checkListLayout.addView(taskLayout);
+    }
+
+    private void pickTime(EditText timeEditText) {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                (view, hourOfDay, minuteOfHour) ->
+                        timeEditText.setText(String.format("%02d:%02d", hourOfDay, minuteOfHour)),
+                hour,
+                minute,
+                true
+        );
+        timePickerDialog.show();
     }
 
     private String readToDoList(String fName) {
@@ -95,13 +106,14 @@ public class WriteActivity extends AppCompatActivity {
             ToDoListStr = new String(txt).trim();
             inFs.close();
 
-            // 파일에서 읽은 내용을 기반으로 체크박스 상태 및 작업 텍스트를 설정
+            // 파일에서 읽은 내용을 기반으로 체크박스 상태, 작업 텍스트, 시간을 설정
             String[] lines = ToDoListStr.split("\n");
             for (String line : lines) {
                 String[] parts = line.split("\\|");
-                if (parts.length == 2) {
+                if (parts.length == 3) {
                     String isChecked = parts[0];
                     String task = parts[1];
+                    String time = parts[2];
 
                     LinearLayout taskLayout = new LinearLayout(this);
                     taskLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -111,22 +123,27 @@ public class WriteActivity extends AppCompatActivity {
                     taskLayout.setOrientation(LinearLayout.HORIZONTAL);
 
                     CheckBox checkBox = new CheckBox(this);
-                    checkBox.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                    ));
                     checkBox.setChecked("1".equals(isChecked));
                     taskLayout.addView(checkBox);
 
                     EditText todoEditText = new EditText(this);
                     todoEditText.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
+                            0,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            1
                     ));
-                    todoEditText.setHint("할 일을 입력하세요.");
-                    todoEditText.setTextSize(20);
                     todoEditText.setText(task);
                     taskLayout.addView(todoEditText);
+
+                    EditText timeEditText = new EditText(this);
+                    timeEditText.setFocusable(false); // To open TimePickerDialog
+                    timeEditText.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    ));
+                    timeEditText.setOnClickListener(v -> pickTime(timeEditText));
+                    timeEditText.setText(time);
+                    taskLayout.addView(timeEditText);
 
                     checkListLayout.addView(taskLayout);
                 }
@@ -157,48 +174,52 @@ public class WriteActivity extends AppCompatActivity {
     }
 
     private void saveDiary(String fileName) {
-        FileOutputStream fos = null;
+        boolean isTimeMissing = false;
 
         try {
-            fos = openFileOutput(fileName, MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(fileName, MODE_PRIVATE);
             StringBuilder content = new StringBuilder();
 
-            // 텍스트를 한 줄로 저장
             for (int i = 0; i < checkListLayout.getChildCount(); i++) {
                 LinearLayout taskLayout = (LinearLayout) checkListLayout.getChildAt(i);
                 CheckBox checkBox = (CheckBox) taskLayout.getChildAt(0);
                 EditText taskEditText = (EditText) taskLayout.getChildAt(1);
+                EditText timeEditText = (EditText) taskLayout.getChildAt(2);
 
                 String task = taskEditText.getText().toString();
+                String time = timeEditText.getText().toString(); // 시간 문자열 추출
 
-                // 체크박스에 내용이 있을 때만 저장
+                // 시간이 입력되지 않은 경우
+                if (time.isEmpty()) {
+                    isTimeMissing = true;
+                    break;
+                }
+
+                // 체크박스 상태와 내용이 있을 때만 저장
                 if (!task.isEmpty()) {
-                    content.append(task).append("\n");
+                    String isChecked = checkBox.isChecked() ? "1" : "0";
+                    content.append(isChecked).append("|").append(task).append("|").append(time).append("\n");
                 } else {
-                    // 내용이 비어있으면 해당 체크박스를 레이아웃에서 제거
                     checkListLayout.removeView(taskLayout);
-                    i--;  // 제거 후에 인덱스가 하나씩 땡겨져서 현재 위치를 다시 확인
-
-                    // 연관된 데이터를 삭제 (이 부분을 적절히 구현해야 합니다)
-                    // 예를 들어, 파일에서 해당 라인을 삭제하는 등의 작업이 필요합니다.
+                    i--;
                 }
             }
 
-            // 하루 피드백 추가
-            content.append("\n").append(feedback.getText().toString());
+            if (!isTimeMissing) {
+                fos.write(content.toString().getBytes());
+                fos.close();
 
-            fos.write(content.toString().getBytes());
-
-            fos.flush();
-            fos.close();
-
-            Toast.makeText(getApplicationContext(), "할 일 및 피드백을 저장했습니다.", Toast.LENGTH_SHORT).show();
-            finish();
+                Toast.makeText(getApplicationContext(), "할 일을 저장했습니다.", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "시간을 입력하세요", Toast.LENGTH_SHORT).show();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "오류가 발생하였습니다!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "오류가 발생했습니다: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }

@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -133,6 +134,12 @@ public class MainActivity extends AppCompatActivity {
                 contextToDoList.setText(str);
             }
         });
+
+//        DBHelper dbHelper = new DBHelper(this);
+//        ArrayList<String> TodoList = dbHelper.getTodolist();
+//
+//        todolist = findViewById(R.id.contextToDoList);
+//        todolist.setText(todolist.toString());
 
     }
 
