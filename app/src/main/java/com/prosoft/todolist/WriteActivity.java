@@ -32,11 +32,16 @@ public class WriteActivity extends AppCompatActivity {
         setContentView(R.layout.active_write);
         checkListLayout = findViewById(R.id.checkListLayout);
 
+
         // Initialize with current date
+        TextView writeDay = findViewById(R.id.writeDay);
         Intent intent = getIntent();
         String year = intent.getStringExtra("years");
         String monthday = intent.getStringExtra("monthdays");
         fileName = year + " " + monthday + ".txt";
+
+        // 현재 날짜를 TextView에 설정
+        writeDay.setText(year + monthday);
 
         String str = readToDoList(fileName);
         // Use str to set up your view
