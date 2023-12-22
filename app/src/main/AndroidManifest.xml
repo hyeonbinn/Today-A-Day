@@ -26,7 +26,7 @@
         </activity>
         <activity android:name="com.prosoft.todolist.MainActivity"
             android:theme="@style/Theme.AppCompat"/>
-        <activity android:name="com.prosoft.todolist.PlanList"
+        <activity android:name="com.prosoft.todolist.TimetableActivity"
             android:exported="false"
             android:parentActivityName="com.prosoft.todolist.MainActivity"
             android:theme="@style/Theme.AppCompat"/>
