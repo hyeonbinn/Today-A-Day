@@ -231,8 +231,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.noteList:
-                Intent intent = new Intent(getApplicationContext(), PlanList.class);
+            case R.id.timetable:
+                Intent intent = new Intent(getApplicationContext(), TimetableActivity.class);
                 startActivity(intent);
                 return true;
 
