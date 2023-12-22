@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.timetable:
-                Intent intent = new Intent(getApplicationContext(), TimetableActivity.class);
+                Intent intent = new Intent(this, TimetableActivity.class);
                 startActivity(intent);
                 return true;
 
@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
                 dlg2.show();
                 return true;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     void delDialog(){
